@@ -1,0 +1,33 @@
+parameters:
+  maintenance:
+    lockFilePath: "%kernel.root_dir%/../var/maintenance.lock"
+    ipAuthorized: ["::1","192.168.1.101"]
+    pathAdmin: "admin"
+services:
+
+#COMMANDS
+  eknow_sylius_tools_plugin.command.createadmincommand:
+    class: Eknow\SyliusToolsPlugin\Command\CreateAdminCommand
+    tags:
+      - { name: console.command }
+  eknow_sylius_tools_plugin.command.deleteadmincommand:
+    class: Eknow\SyliusToolsPlugin\Command\DeleteAdminCommand
+    tags:
+      - { name: console.command }
+  eknow_sylius_tools_plugin.command.emailcommand:
+    class: Eknow\SyliusToolsPlugin\Command\EmailCommand
+    tags:
+      - { name: console.command }
+  eknow_sylius_tools_plugin.command.maintenancesetcommand:
+    class: Eknow\SyliusToolsPlugin\Command\MaintenanceSetCommand
+    arguments: ["%maintenance%"]
+    tags:
+      - { name: console.command }
+
+#EVENTLISTENER
+  Eknow\SyliusToolsPlugin\EventListener\MaintenanceListener:
+     tags:
+        - { name: kernel.event_listener, event: kernel.request }
+     arguments:
+        - ['%maintenance%']
+        - "@twig"
