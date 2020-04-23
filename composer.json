@@ -1,5 +1,5 @@
 {
-    "name": "disvroian/wishlist-plugin",
+    "name": "eknow/sylius-tools-plugin",
     "type": "sylius-plugin",
     "description": "Maintenance page and some tools for Sylius.",
     "license": "MIT",
