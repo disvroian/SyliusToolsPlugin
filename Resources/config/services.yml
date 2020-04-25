@@ -2,7 +2,7 @@ parameters:
   maintenance:
     lockFilePath: "%kernel.root_dir%/../var/maintenance.lock"
     ipAuthorized: ["::1","192.168.1.101"]
-    pathAdmin: "admin"
+    pathAdmin: "sylius_admin"
 services:
 
 #COMMANDS
@@ -14,8 +14,8 @@ services:
     class: Eknow\SyliusToolsPlugin\Command\DeleteAdminCommand
     tags:
       - { name: console.command }
-  eknow_sylius_tools_plugin.command.emailcommand:
-    class: Eknow\SyliusToolsPlugin\Command\EmailCommand
+  eknow_sylius_tools_plugin.command.abandonnedcartcommand:
+    class: Eknow\SyliusToolsPlugin\Command\AbandonnedCartCommand
     tags:
       - { name: console.command }
   eknow_sylius_tools_plugin.command.maintenancesetcommand:
