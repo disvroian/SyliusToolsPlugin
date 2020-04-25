@@ -15,10 +15,10 @@ use Symfony\Bundle\FrameworkBundle\Command\ContainerAwareCommand ;
 use Symfony\Component\Console\Input\InputInterface ;
 use Symfony\Component\Console\Output\OutputInterface ;
 
-class DeleteAdminCommand extends ContainerAwareCommand
+class UnlockAdminCommand extends ContainerAwareCommand
 {
 
-  protected static $defaultName = 'sylius:admin:delete' ;
+  protected static $defaultName = 'sylius:admin:unlock' ;
 
     /**
      * {@inheritdoc}
@@ -26,8 +26,8 @@ class DeleteAdminCommand extends ContainerAwareCommand
   protected function configure(): void
   {
     $this
-        ->setName('sylius:admin:delete')
-        ->setDescription('Delete the admin user on backend with his ID');
+        ->setName('sylius:admin:unlock')
+        ->setDescription('Unlock the admin user on backend with his ID');
   }
 
   /**
@@ -35,7 +35,7 @@ class DeleteAdminCommand extends ContainerAwareCommand
    */
   protected function execute(InputInterface $input, OutputInterface $output)
   {
-    $output->writeln('Command will delete the administrator.') ;
+    $output->writeln('Command will unlock the administrator.') ;
     $this->setupAdministratorUser($input, $output) ;
     return 0;
   }
@@ -43,17 +43,19 @@ class DeleteAdminCommand extends ContainerAwareCommand
   protected function setupAdministratorUser(InputInterface $input, OutputInterface $output): void
   {
       $outputStyle = new SymfonyStyle($input, $output);
-      $outputStyle->writeln('Delete an administrator account.');
+      $outputStyle->writeln('Unlock an administrator account.');
 
       $userManager= $this->getContainer()->get('sylius.manager.admin_user');
 
       /** @var UserRepositoryInterface $userRepository */
       $userRepository= $this->getAdminUserRepository() ;
       $user= $userRepository->find($this->getAdministratorId($input, $output)) ;
-      $userManager->remove($user) ;
+      $user->setEnabled(true) ;
+      $user->setLocked(false) ;
+      $userManager->persist($user) ;
       $userManager->flush() ;
 
-      $outputStyle->writeln('Administrator account <info>successfully deleted.</info>') ;
+      $outputStyle->writeln('Administrator account <info>successfully unlocked.</info>') ;
       $outputStyle->newLine() ;
   }
 
@@ -85,7 +87,7 @@ class DeleteAdminCommand extends ContainerAwareCommand
           if($id!= "") {
             return $id ;
           }
-      } while ($id != "");
+      } while ($id != "") ;
   }
 
   private function getAdminUserRepository(): UserRepositoryInterface
