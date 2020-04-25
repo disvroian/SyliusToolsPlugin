@@ -72,7 +72,7 @@ class AbandonnedCartCommand extends ContainerAwareCommand
       $question = new Question('Please enter an number of days:', false) ;
       $question->setNormalizer(function ($value) {
         if (empty($value)) {
-          throw new \Exception('Email can not be empty');
+          throw new \Exception('Days number can not be empty');
         }
         return $value;
       });
