@@ -27,7 +27,7 @@
     ```bash
     $ php bin/console list
     ```
-You will see a list of command such as
+Result will be an list of command such as
 
     ```bash
     $ sylius:admin:create                     Create an admin user for the backend
